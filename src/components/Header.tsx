@@ -16,8 +16,8 @@ const Header = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
-            Kollektion
+          <Link to="/product/ergonomic-footrest" className="text-muted-foreground hover:text-foreground transition-colors">
+            Fotstöd
           </Link>
           <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
             Om oss
@@ -55,8 +55,8 @@ const Header = () => {
             className="md:hidden overflow-hidden border-t border-border bg-background"
           >
             <nav className="flex flex-col gap-4 p-6 text-sm font-medium">
-              <Link to="/" onClick={() => setMenuOpen(false)} className="text-foreground">
-                Kollektion
+              <Link to="/product/ergonomic-footrest" onClick={() => setMenuOpen(false)} className="text-foreground">
+                Fotstöd
               </Link>
               <Link to="/about" onClick={() => setMenuOpen(false)} className="text-foreground">
                 Om oss

@@ -7,6 +7,7 @@ import { CartProvider } from "@/lib/cart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
+import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -23,6 +24,7 @@ const App = () => (
           <Header />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/product/:id" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />

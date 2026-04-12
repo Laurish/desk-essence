@@ -13,9 +13,9 @@ const Cart = () => {
     return (
       <main className="pt-24 container mx-auto px-6 text-center min-h-[60vh] flex flex-col items-center justify-center">
         <h1 className="font-serif text-3xl mb-4">Varukorgen är tom</h1>
-        <p className="text-muted-foreground mb-8">Utforska vår kollektion och hitta något fint.</p>
-        <Link to="/">
-          <Button>Se kollektionen</Button>
+        <p className="text-muted-foreground mb-8">Utforska vårt fotstöd och lägg till det i varukorgen.</p>
+        <Link to="/product/ergonomic-footrest">
+          <Button>Se fotstödet</Button>
         </Link>
       </main>
     );
@@ -33,7 +33,7 @@ const Cart = () => {
               className="flex gap-4 border-b border-border pb-6"
             >
               <img
-                src={item.product.image}
+                src={item.product.images[0]}
                 alt={item.product.name}
                 className="w-24 h-24 object-cover rounded-md"
                 loading="lazy"
