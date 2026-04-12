@@ -3,61 +3,54 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  image: string;
+  images: string[];
   category: string;
   badge?: string;
+  features?: string[];
 }
 
-import organizerImg from "@/assets/product-organizer.jpg";
-import deskmatImg from "@/assets/product-deskmat.jpg";
-import penholderImg from "@/assets/product-penholder.jpg";
-import lampImg from "@/assets/product-lamp.jpg";
-import trayImg from "@/assets/product-tray.jpg";
+import footrestOverview from "@/assets/footrest-overview.jpg";
+import footrestWarranty from "@/assets/footrest-warranty.jpg";
+import footrestWashable from "@/assets/footrest-washable.jpg";
+import footrestFeatures from "@/assets/footrest-features.jpg";
+import footrestBenefits from "@/assets/footrest-benefits.jpg";
+import footrestRelaxed from "@/assets/footrest-relaxed.jpg";
+import footrestAdjustable from "@/assets/footrest-adjustable.jpg";
+import footrestOccasions from "@/assets/footrest-occasions.jpg";
+import footrestFleece from "@/assets/footrest-fleece.jpg";
 
-export const products: Product[] = [
-  {
-    id: "walnut-organizer",
-    name: "Walnut & Brass Organizer",
-    description: "Hand-finished walnut desk organizer with solid brass base. Holds pens, cards, and small essentials with timeless elegance.",
-    price: 1290,
-    image: organizerImg,
-    category: "Organizers",
-    badge: "Bestseller",
-  },
-  {
-    id: "cognac-desk-mat",
-    name: "Cognac Leather Desk Mat",
-    description: "Full-grain vegetable-tanned leather desk mat. Ages beautifully with a rich patina unique to you.",
-    price: 1690,
-    image: deskmatImg,
-    category: "Desk Mats",
-  },
-  {
-    id: "ceramic-pen-holder",
-    name: "Ceramic Pen Holder",
-    description: "Matte white ceramic pen holder, hand-thrown and kiln-fired. A quiet statement of refined taste.",
-    price: 590,
-    image: penholderImg,
-    category: "Pen Holders",
-  },
-  {
-    id: "concrete-brass-lamp",
-    name: "Concrete & Brass Lamp",
-    description: "Industrial-meets-luxury desk lamp with hand-cast concrete base and adjustable solid brass shade.",
-    price: 2490,
-    image: lampImg,
-    category: "Lighting",
-    badge: "New",
-  },
-  {
-    id: "walnut-accessory-tray",
-    name: "Walnut Accessory Tray",
-    description: "Handcrafted walnut tray with felt-lined interior. Perfect for watches, keys, and daily carry items.",
-    price: 890,
-    image: trayImg,
-    category: "Trays",
-  },
-];
+export const footrest: Product = {
+  id: "ergonomic-footrest",
+  name: "Ergonomic Footrest",
+  description:
+    "Vårt ergonomiska fotstöd med minnesskum hjälper dig att sitta bekvämare hela dagen. Justerbar höjd, tvättbart överdrag i sammet och en mysig fleece-ficka som håller fötterna varma. Halkfri botten och stark kardborre håller allt på plats.",
+  price: 549,
+  images: [
+    footrestOverview,
+    footrestFleece,
+    footrestRelaxed,
+    footrestAdjustable,
+    footrestFeatures,
+    footrestBenefits,
+    footrestWashable,
+    footrestOccasions,
+    footrestWarranty,
+  ],
+  category: "Fotstöd",
+  badge: "Populär",
+  features: [
+    "Justerbar höjd – 10 cm eller 15 cm",
+    "Minnesskum som inte blir platt",
+    "Tvättbart sametsöverdrag",
+    "Mysig fleece-ficka för kalla fötter",
+    "Halkfri botten",
+    "Stark kardborre håller delarna på plats",
+    "30 dagars garanti",
+  ],
+};
+
+// Keep backward compat
+export const products: Product[] = [footrest];
 
 export const formatPrice = (price: number) => {
   return new Intl.NumberFormat("sv-SE", {
