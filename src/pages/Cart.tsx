@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { toast } from "sonner";
 
 const Cart = () => {
   const { items, updateQuantity, removeItem, totalPrice } = useCart();
+  const [loading, setLoading] = useState(false);
 
   if (items.length === 0) {
     return (
@@ -90,12 +92,37 @@ const Cart = () => {
           </div>
           <Button
             className="w-full"
-            onClick={() => toast.info("Betalning via Stripe kopplas snart!")}
+            disabled={loading}
+            onClick={async () => {
+              setLoading(true);
+              try {
+                const res = await fetch("/api/create-checkout-session", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    items: items.map((item) => ({
+                      priceId: "price_1TMq3D7vlCiXlogaUqWmCtP3",
+                      quantity: item.quantity,
+                    })),
+                  }),
+                });
+                const data = await res.json();
+                if (data.url) {
+                  window.location.href = data.url;
+                } else {
+                  toast.error("Något gick fel, försök igen.");
+                }
+              } catch {
+                toast.error("Kunde inte ansluta till betalning.");
+              } finally {
+                setLoading(false);
+              }
+            }}
           >
-            Till kassan
+            {loading ? "Laddar..." : "Till kassan"}
           </Button>
           <p className="text-xs text-muted-foreground text-center mt-3">
-            Stripe-betalning aktiveras snart
+            Säker betalning via Stripe
           </p>
         </div>
       </div>
