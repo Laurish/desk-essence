@@ -17,6 +17,7 @@ export default async function handler(req, res) {
         quantity: item.quantity,
       })),
       mode: "payment",
+      automatic_tax: { enabled: true },
       shipping_address_collection: {
         allowed_countries: ["SE"],
       },
