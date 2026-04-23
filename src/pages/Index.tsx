@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { footrest, formatPrice } from "@/lib/products";
 import { useCart } from "@/lib/cart";
-import { ShoppingBag, ArrowRight, Check } from "lucide-react";
+import { ShoppingBag, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -121,44 +121,6 @@ const Index = () => {
               <p className="text-[13px] leading-[1.65] text-muted-foreground">{f.p}</p>
             </motion.div>
           ))}
-        </div>
-      </section>
-
-      {/* BENEFITS — image + checks */}
-      <section className="bg-card border-y border-border">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-20 grid md:grid-cols-2 gap-12 items-center">
-          <motion.img
-            src={footrest.images[5]}
-            alt="Fördelar"
-            loading="lazy"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full aspect-square object-cover"
-          />
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="eyebrow mb-4">DESIGNAT FÖR VÄLMÅENDE</div>
-            <h2 className="font-serif text-3xl md:text-4xl mb-6">En liten sak som ändrar hela dagen.</h2>
-            <ul className="space-y-3 mb-8">
-              {["Minskar ryggsmärta", "Förbättrar blodcirkulationen", "Stödjer ben och höfter", "Värmer kalla fötter"].map((b) => (
-                <li key={b} className="flex items-center gap-3 text-[15px]">
-                  <span className="w-5 h-5 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-accent" />
-                  </span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-            <Link to="/product/ergonomic-footrest">
-              <Button variant="outline" className="rounded-sm tracking-[0.14em] uppercase text-xs gap-2">
-                Se alla detaljer <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          </motion.div>
         </div>
       </section>
 
