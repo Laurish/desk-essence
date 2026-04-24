@@ -77,8 +77,8 @@ export default async function handler(req, res) {
 
   try {
     await resend.emails.send({
-      from: "Desk Essence <noreply@desk-essence.se>",   // Byt till er domän
-      to: "sandra@desk-essence.se",                      // Byt till Sandras e-post
+      from: "Desk Essence <onboarding@resend.dev>",   // Byt till er domän
+      to: "daniel.skshipek@hotmail.com",                      // Byt till Sandras e-post
       replyTo: email,
       subject: `[Desk Essence] ${subjectLabel} – ${name}`,
       html: bodyHtml,
