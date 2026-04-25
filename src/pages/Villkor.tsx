@@ -13,15 +13,9 @@ const Villkor = () => (
       <div className="max-w-2xl mb-16">
         <div className="eyebrow mb-4">JURIDISKT</div>
         <h1 className="font-serif text-4xl md:text-5xl mb-6">Allmänna villkor</h1>
-        <p className="text-muted-foreground text-[15px]">Senast uppdaterad: januari 2025</p>
+        <p className="text-muted-foreground text-[15px]">Senast uppdaterad: april 2026</p>
       </div>
       <div className="max-w-2xl">
-        <Section title="Företagsinformation">
-          <p>Desk Essence drivs av Sandra Andriainen, enskild näringsidkare.</p>
-          <p>Organisationsnummer: 910830-XXXX</p>
-          <p>Adress: Hammargatan 15 d Lgh 1202, 811 30 Sandviken</p>
-          <p>E-post: <a href="mailto:hej@deskessence.se" className="underline underline-offset-4 hover:text-foreground transition-colors">hej@deskessence.se</a></p>
-        </Section>
         <Section title="Tillämpning">
           <p>Dessa allmänna villkor gäller för alla köp som görs via desk-essence.se. Genom att genomföra ett köp godkänner du dessa villkor.</p>
         </Section>

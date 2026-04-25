@@ -13,14 +13,9 @@ const Integritetspolicy = () => (
       <div className="max-w-2xl mb-16">
         <div className="eyebrow mb-4">JURIDISKT</div>
         <h1 className="font-serif text-4xl md:text-5xl mb-6">Integritetspolicy</h1>
-        <p className="text-muted-foreground text-[15px]">Senast uppdaterad: januari 2025</p>
+        <p className="text-muted-foreground text-[15px]">Senast uppdaterad: april 2026</p>
       </div>
       <div className="max-w-2xl">
-        <Section title="Personuppgiftsansvarig">
-          <p>Sandra Andriainen, org.nr 910830-XXXX</p>
-          <p>Hammargatan 15 d Lgh 1202, 811 30 Sandviken</p>
-          <p>E-post: <a href="mailto:hej@deskessence.se" className="underline underline-offset-4 hover:text-foreground transition-colors">hej@deskessence.se</a></p>
-        </Section>
         <Section title="Vilka uppgifter samlar vi in?">
           <p>Vid köp behandlar vi följande personuppgifter: namn, leveransadress och faktureringsadress, e-postadress, telefonnummer (om du anger det), köp- och orderhistorik samt betalningsinformation (hanteras av Stripe — vi lagrar inga kortuppgifter).</p>
         </Section>
@@ -41,6 +36,11 @@ const Integritetspolicy = () => (
         </Section>
         <Section title="Delning med tredje part">
           <p>Vi delar dina uppgifter med Stripe (betalning), Klarna (betalning), Fraktjakt och samarbetande fraktbolag (leverans) samt Google (anonym webbanalys). Vi säljer aldrig dina personuppgifter till tredje part.</p>
+        </Section>
+        <Section title="Kontakt och personuppgiftsansvarig">
+          <p>Desk Essence drivs av Sandra Andriainen (enskild näringsidkare, org.nr 910830-XXXX), som är ansvarig för behandlingen av dina personuppgifter.</p>
+          <p>Hammargatan 15 d Lgh 1202, 811 30 Sandviken</p>
+          <p>E-post: <a href="mailto:hej@deskessence.se" className="underline underline-offset-4 hover:text-foreground transition-colors">hej@deskessence.se</a></p>
         </Section>
       </div>
     </motion.div>
