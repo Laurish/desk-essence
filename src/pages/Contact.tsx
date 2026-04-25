@@ -39,6 +39,17 @@ const Contact = () => {
   const showOrderField = form.subject === "return" || form.subject === "complaint";
   const showReturnFields = form.subject === "return";
 
+  const isReturnIncomplete =
+    form.subject === "return" &&
+    (!form.orderNumber || !form.returnReason || !form.desiredOutcome);
+
+  const isSubmitDisabled =
+    status === "loading" ||
+    !form.name ||
+    !form.email ||
+    !form.subject ||
+    isReturnIncomplete;
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -175,7 +186,7 @@ const Contact = () => {
                     required
                     value={form.orderNumber}
                     onChange={handleChange}
-                    placeholder="t.ex. 12345"
+                    placeholder="Klistra in ditt order-ID från bekräftelsemailet"
                     className={inputClass}
                   />
                   <p className="mt-1.5 text-xs text-muted-foreground">Finns i din orderbekräftelse via e-post.</p>
@@ -194,7 +205,7 @@ const Contact = () => {
                     Du har <strong className="text-foreground">30 dagars ångerrätt</strong> från mottagen leverans. Varan ska vara i ursprungligt skick. Returfrakten betalas av dig — vi skickar instruktioner via e-post.
                   </div>
                   <div>
-                    <label className="eyebrow mb-2 block" style={{ fontSize: "11px" }}>RETURORSAK</label>
+                    <label className="eyebrow mb-2 block" style={{ fontSize: "11px" }}>RETURORSAK <span className="text-accent">*</span></label>
                     <select name="returnReason" value={form.returnReason} onChange={handleChange} className={selectClass}>
                       <option value="">Välj orsak...</option>
                       <option value="changed_mind">Ångrat mig</option>
@@ -204,11 +215,11 @@ const Contact = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="eyebrow mb-2 block" style={{ fontSize: "11px" }}>ÖNSKAT RESULTAT</label>
+                    <label className="eyebrow mb-2 block" style={{ fontSize: "11px" }}>VAD VILL DU HA ISTÄLLET? <span className="text-accent">*</span></label>
                     <select name="desiredOutcome" value={form.desiredOutcome} onChange={handleChange} className={selectClass}>
                       <option value="">Välj...</option>
                       <option value="refund">Återbetalning</option>
-                      <option value="exchange">Byte mot annan produkt</option>
+                      <option value="replacement">Ny ersättningsprodukt</option>
                     </select>
                   </div>
                 </motion.div>
@@ -250,7 +261,7 @@ const Contact = () => {
               {/* Submit */}
               <button
                 onClick={handleSubmit}
-                disabled={status === "loading" || !form.name || !form.email || !form.subject}
+                disabled={isSubmitDisabled}
                 className="w-full bg-foreground text-background py-3.5 px-6 rounded-lg text-[15px] font-medium hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
               >
                 {status === "loading" ? "Skickar..." : "Skicka meddelande"}
