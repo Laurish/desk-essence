@@ -89,47 +89,16 @@ const Contact = () => {
           <div className="eyebrow mb-4">KONTAKT</div>
           <h1 className="font-serif text-4xl md:text-5xl mb-6">Hör av dig.</h1>
           <p className="text-muted-foreground text-[15px] leading-[1.7]">
-            Frågor om produkten, din beställning, eller något helt annat? Vi svarar inom 24 timmar, oftast snabbare.
+            Frågor om produkten, din beställning, eller något helt annat? Vi svarar inom 24 timmar, oftast snabbare. Du kan också använda formuläret för att utöva din <strong className="text-foreground">30-dagars ångerrätt</strong> — välj bara "Retur / Ånger" som ämne.
           </p>
         </div>
-
-        {/* Info strip */}
-        <div className="grid md:grid-cols-3 gap-8 border-y border-border py-10">
-          <div className="flex gap-4">
-            <Mail className="w-5 h-5 mt-1 flex-shrink-0 text-accent" />
-            <div>
-              <div className="eyebrow mb-2">E-POST</div>
-              <a href="mailto:hej@deskessence.se" className="text-[15px] hover:gold-text transition-colors">
-                hej@deskessence.se
-              </a>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <MapPin className="w-5 h-5 mt-1 flex-shrink-0 text-accent" />
-            <div>
-              <div className="eyebrow mb-2">KONTOR</div>
-              <p className="text-[15px]">Stockholm, Sverige</p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <Clock className="w-5 h-5 mt-1 flex-shrink-0 text-accent" />
-            <div>
-              <div className="eyebrow mb-2">SVARSTID</div>
-              <p className="text-[15px]">Mån–Fre · 24 h</p>
-            </div>
-          </div>
-        </div>
-
-        <p className="scribble mt-10 text-[16px]">
-          Vi är ett litet team — du får svar av en människa, inte en bot.
-        </p>
 
         {/* Form */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="mt-16 max-w-2xl"
+          className="mt-0 max-w-2xl mb-24"
         >
           <div className="eyebrow mb-6">SKRIV TILL OSS</div>
 
@@ -289,6 +258,37 @@ const Contact = () => {
             </div>
           )}
         </motion.div>
+
+        {/* Info strip */}
+        <div className="grid md:grid-cols-3 gap-8 border-y border-border py-10">
+          <div className="flex gap-4">
+            <Mail className="w-5 h-5 mt-1 flex-shrink-0 text-accent" />
+            <div>
+              <div className="eyebrow mb-2">E-POST</div>
+              <a href="mailto:hej@deskessence.se" className="text-[15px] hover:gold-text transition-colors">
+                hej@deskessence.se
+              </a>
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <MapPin className="w-5 h-5 mt-1 flex-shrink-0 text-accent" />
+            <div>
+              <div className="eyebrow mb-2">KONTOR</div>
+              <p className="text-[15px]">Stockholm, Sverige</p>
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <Clock className="w-5 h-5 mt-1 flex-shrink-0 text-accent" />
+            <div>
+              <div className="eyebrow mb-2">SVARSTID</div>
+              <p className="text-[15px]">Mån–Fre · 24 h</p>
+            </div>
+          </div>
+        </div>
+
+        <p className="scribble mt-10 text-[16px]">
+          Vi är ett litet team — du får svar av en människa, inte en bot.
+        </p>
       </motion.div>
     </main>
   );
