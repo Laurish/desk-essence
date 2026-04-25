@@ -77,7 +77,7 @@ const Index = () => {
               <img
                 src={footrest.images[0]}
                 alt={footrest.name}
-                className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 hover:scale-[1.02] transition-all duration-500 cursor-pointer"
+                className="w-full h-full object-cover cursor-pointer"
               />
             </Link>
           </motion.div>
