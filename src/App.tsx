@@ -19,6 +19,7 @@ import Integritetspolicy from "./pages/Integritetspolicy";
 import Retur from "./pages/Retur";
 import Leverans from "./pages/Leverans";
 import Cookies from "./pages/Cookies";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Header />
           <Routes>
             <Route path="/" element={<Index />} />
