@@ -113,8 +113,10 @@ const Product = () => {
             </h1>
 
             <div className="flex items-baseline gap-3 mb-6 font-serif">
-              <span className="text-base text-muted-foreground line-through">899 kr</span>
-              <span className="text-3xl font-medium">{formatPrice(footrest.price)}</span>
+             {footrest.originalPrice && (
+              <span className="text-base text-muted-foreground line-through">{formatPrice(footrest.originalPrice)}</span>
+             )}
+             <span className="text-3xl font-medium">{formatPrice(footrest.price)}</span>
             </div>
 
             <p className="text-[15px] leading-[1.7] text-muted-foreground mb-8">

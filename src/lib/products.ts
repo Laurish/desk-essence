@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  originalPrice?: number;
   images: string[];
   category: string;
   badge?: string;
@@ -24,7 +25,8 @@ export const footrest: Product = {
   name: "Ergonomic Footrest",
   description:
     "Vårt ergonomiska fotstöd med minnesskum hjälper dig att sitta bekvämare hela dagen. Justerbar höjd, tvättbart överdrag i sammet och en mysig fleece-ficka som håller fötterna varma. Halkfri botten och stark kardborre håller allt på plats.",
-  price: 549,
+  price: 399,
+  originalPrice: 499,
   images: [
     footrestOverview,
     footrestFleece,
@@ -49,7 +51,6 @@ export const footrest: Product = {
   ],
 };
 
-// Keep backward compat
 export const products: Product[] = [footrest];
 
 export const formatPrice = (price: number) => {

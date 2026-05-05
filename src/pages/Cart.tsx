@@ -49,7 +49,12 @@ const Cart = () => {
               </div>
               <div className="flex-1">
                 <h3 className="font-serif text-xl mb-1">{item.product.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{formatPrice(item.product.price)}</p>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-sm text-muted-foreground line-through">
+                    {item.product.originalPrice && formatPrice(item.product.originalPrice)}
+                  </span>
+                  <span className="text-sm text-foreground">{formatPrice(item.product.price)}</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center border border-border">
                     <button
@@ -111,7 +116,7 @@ const Cart = () => {
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
                     items: items.map((item) => ({
-                      priceId: "price_1TQ9s77vlCiXlogahA3By2lf",
+                      priceId: "price_1TTjSI7vlCiXlogaymKvMcNV",
                       quantity: item.quantity,
                     })),
                   }),
