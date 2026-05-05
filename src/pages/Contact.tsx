@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Clock } from "lucide-react";
+import { Mail, MapPin, Clock, Paperclip, X } from "lucide-react";
 
 type Subject = "question" | "return" | "complaint" | "other" | "";
 
@@ -35,9 +35,12 @@ const Contact = () => {
   const [form, setForm] = useState<FormData>(initialForm);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [attachedFile, setAttachedFile] = useState<{ name: string; base64: string; mimeType: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const showOrderField = form.subject === "return" || form.subject === "complaint";
   const showReturnFields = form.subject === "return";
+  const showFileUpload = form.subject === "complaint";
 
   const isReturnIncomplete =
     form.subject === "return" &&
@@ -57,6 +60,23 @@ const Contact = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = (reader.result as string).split(",")[1];
+      setAttachedFile({ name: file.name, base64, mimeType: file.type });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeFile = () => {
+    setAttachedFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setStatus("loading");
@@ -66,7 +86,7 @@ const Contact = () => {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, attachment: attachedFile }),
       });
 
       if (!res.ok) {
@@ -76,6 +96,7 @@ const Contact = () => {
 
       setStatus("success");
       setForm(initialForm);
+      setAttachedFile(null);
     } catch (err: unknown) {
       setStatus("error");
       setErrorMessage(err instanceof Error ? err.message : "Något gick fel. Försök igen.");
@@ -239,12 +260,50 @@ const Contact = () => {
                     form.subject === "return"
                       ? "Övrig information du vill tillägga (valfritt)..."
                       : form.subject === "complaint"
-                      ? "Beskriv felet och bifoga gärna ett foto om möjligt..."
+                      ? "Beskriv felet så detaljerat som möjligt..."
                       : "Skriv ditt meddelande här..."
                   }
                   className={`${inputClass} resize-none`}
                 />
               </div>
+
+              {/* File upload – only for complaints */}
+              {showFileUpload && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <label className="eyebrow mb-2 block" style={{ fontSize: "11px" }}>BIFOGA FOTO (VALFRITT)</label>
+                  {attachedFile ? (
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-border text-[14px]">
+                      <Paperclip className="w-4 h-4 text-accent flex-shrink-0" />
+                      <span className="text-foreground truncate flex-1">{attachedFile.name}</span>
+                      <button
+                        type="button"
+                        onClick={removeFile}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="Ta bort fil"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="flex items-center gap-3 px-4 py-3 rounded-lg border border-dashed border-border text-[14px] text-muted-foreground hover:border-accent hover:text-foreground transition-colors cursor-pointer">
+                      <Paperclip className="w-4 h-4 flex-shrink-0" />
+                      <span>Klicka för att bifoga ett foto av felet</span>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                  <p className="mt-1.5 text-xs text-muted-foreground">JPG, PNG eller WEBP. Max 4 MB.</p>
+                </motion.div>
+              )}
 
               {/* Error */}
               {status === "error" && (

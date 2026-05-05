@@ -26,13 +26,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, orderNumber, subject, returnReason, desiredOutcome, message } = req.body;
+  const { name, email, orderNumber, subject, returnReason, desiredOutcome, message, attachment } = req.body;
 
   if (!name || !email || !subject) {
     return res.status(400).json({ error: "Namn, e-post och ämne är obligatoriska." });
   }
 
-  // Build email body
   const subjectLabel = subjectLabels[subject] || subject;
 
   let bodyHtml = `
@@ -72,16 +71,23 @@ export default async function handler(req, res) {
           <td style="padding: 10px 0; font-size: 14px; white-space: pre-line;">${message}</td>
         </tr>` : ""}
       </table>
+      ${attachment ? `<p style="margin-top: 20px; font-size: 13px; color: #666;">📎 Foto bifogat: ${attachment.name}</p>` : ""}
     </div>
   `;
 
+  // Build attachments array for Resend
+  const attachments = attachment
+    ? [{ filename: attachment.name, content: attachment.base64 }]
+    : [];
+
   try {
     await resend.emails.send({
-      from: "Desk Essence <onboarding@resend.dev>",   // Byt till er domän
-      to: "daniel.skshipek@hotmail.com",                      // Byt till Sandras e-post
+      from: "Desk Essence <onboarding@resend.dev>",
+      to: "daniel.skshipek@hotmail.com",
       replyTo: email,
       subject: `[Desk Essence] ${subjectLabel} – ${name}`,
       html: bodyHtml,
+      attachments,
     });
 
     return res.status(200).json({ ok: true });
