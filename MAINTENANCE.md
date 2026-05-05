@@ -12,8 +12,9 @@ Allt du behöver veta för att underhålla och uppdatera sajten.
 4. [Ändra priset](#ändra-priset)
 5. [Stripe](#stripe)
 6. [Resend – kontaktformulär](#resend--kontaktformulär)
-7. [Miljövariabler](#miljövariabler)
-8. [Domän & hosting](#domän--hosting)
+7. [Supabase – recensioner](#supabase--recensioner)
+8. [Miljövariabler](#miljövariabler)
+9. [Domän & hosting](#domän--hosting)
 
 ---
 
@@ -26,6 +27,7 @@ Allt du behöver veta för att underhålla och uppdatera sajten.
 | Routing | React Router |
 | Betalning | Stripe Checkout |
 | E-post | Resend |
+| Databas | Supabase |
 | Hosting | Vercel |
 | Repo | GitHub – `Laurish/desk-essence` |
 
@@ -37,13 +39,17 @@ Allt du behöver veta för att underhålla och uppdatera sajten.
 src/
   lib/
     products.ts          ← Pris, produktinfo, bilder
+    supabase.ts          ← Supabase-klient (URL + anon key)
   pages/
     Index.tsx            ← Startsidan
     Product.tsx          ← Produktsidan
     Cart.tsx             ← Varukorgen (innehåller Stripe Price ID)
     Contact.tsx          ← Kontaktformulär med fotouppladdning
+    Reviews.tsx          ← Recensionssidan (visa + lämna recension)
   components/
+    Header.tsx           ← Navbar med länkar
     Footer.tsx           ← Footer med länkar
+    ReviewsSection.tsx   ← Recensionskomponent (används på Index + Product)
 
 api/
   contact.js             ← Serverless-funktion för kontaktformulär (Resend)
@@ -73,7 +79,7 @@ All prisinformation sitter i **`src/lib/products.ts`**.
 ### Ändra försäljningspris
 
 ```ts
-price: 399,        // ← det pris kunden betalar
+price: 399,         // ← det pris kunden betalar
 originalPrice: 499, // ← överstryckt "gamla" pris
 ```
 
@@ -160,7 +166,7 @@ Byt till rätt e-postadress när det är dags.
 from: "Desk Essence <onboarding@resend.dev>",
 ```
 
-När ni köper en domän för sajten – verifiera den i Resend och byt till t.ex. `noreply@deskessence.se`.
+När ni köper en domän – verifiera den i Resend och byt till t.ex. `noreply@deskessence.se`.
 
 ### Formulärets funktioner
 
@@ -168,6 +174,66 @@ När ni köper en domän för sajten – verifiera den i Resend och byt till t.e
 - **Retur / Ånger** – ordernummer, returorsak, önskat utfall
 - **Reklamation** – beskrivning + möjlighet att bifoga foto (skickas som bilaga i mailet)
 - **Övrigt** – fritt meddelande
+
+---
+
+## Supabase – recensioner
+
+### Logga in
+[supabase.com](https://supabase.com) → projektet **desk-essence**
+
+### Uppgifter
+- **Project URL:** `https://schgcawfirvzlemwdoqf.supabase.co`
+- **Anon key:** finns i `src/lib/supabase.ts`
+
+### Hur recensioner fungerar
+
+1. Kunden fyller i formuläret på `/recensioner`
+2. Recensionen sparas i databasen med `approved = false`
+3. Den syns **inte** på sajten förrän du godkänner den
+4. Du hanterar recensioner via **SQL Editor** i Supabase
+
+### Godkänna recensioner
+
+Gå till **SQL Editor** och kör:
+
+```sql
+-- Godkänn alla väntande recensioner på en gång
+update public.reviews set approved = true where approved = false;
+```
+
+Eller godkänn en specifik – kolla `id`-värdet i Table Editor först:
+
+```sql
+update public.reviews set approved = true where id = 'uuid-här';
+```
+
+### Ta bort en recension
+
+```sql
+-- Ta bort en specifik recension (kolla id:t i Table Editor)
+delete from public.reviews where id = 'uuid-här';
+
+-- Ta bort alla recensioner
+delete from public.reviews;
+```
+
+### Hitta id:t på en recension
+
+Gå till **Table Editor → reviews** – där ser du alla recensioner med deras `id`, namn, betyg och `approved`-status.
+
+### Lägga till en recension manuellt
+
+```sql
+insert into public.reviews (name, rating, order_number, message, approved)
+values ('Anna Svensson', 5, 'order-123', 'Fantastisk produkt!', true);
+```
+
+### Se väntande recensioner
+
+```sql
+select * from public.reviews where approved = false order by created_at desc;
+```
 
 ---
 

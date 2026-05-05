@@ -67,22 +67,34 @@ const Reviews = () => {
     !form.message;
 
   const handleSubmit = async () => {
-    setStatus("loading");
-    const { error } = await supabase.from("reviews").insert({
+  setStatus("loading");
+  const { error } = await supabase.from("reviews").insert({
+    name: form.name,
+    order_number: form.orderNumber,
+    rating: form.rating,
+    message: form.message,
+    approved: false,
+  });
+
+  if (error) {
+    setStatus("error");
+    return;
+  }
+
+  // Skicka notismail
+  await fetch("/api/review-notify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       name: form.name,
-      order_number: form.orderNumber,
       rating: form.rating,
       message: form.message,
-      approved: false,
-    });
+    }),
+  });
 
-    if (error) {
-      setStatus("error");
-    } else {
-      setStatus("success");
-      setForm({ name: "", orderNumber: "", rating: 0, message: "" });
-    }
-  };
+  setStatus("success");
+  setForm({ name: "", orderNumber: "", rating: 0, message: "" });
+};
 
   const avgRating = reviews.length
     ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
