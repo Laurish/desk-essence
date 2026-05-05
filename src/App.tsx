@@ -12,6 +12,7 @@ import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Faq from "./pages/Faq";
 import Contact from "./pages/Contact";
+import Reviews from "./pages/Reviews";
 import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
 import Villkor from "./pages/Villkor";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/recensioner" element={<Reviews />} />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/villkor" element={<Villkor />} />
             <Route path="/integritetspolicy" element={<Integritetspolicy />} />

@@ -10,6 +10,7 @@ const Header = () => {
 
   const links = [
     { to: "/product/ergonomic-footrest", label: "Produkten" },
+    { to: "/recensioner", label: "Recensioner" },
     { to: "/faq", label: "FAQ" },
     { to: "/contact", label: "Kontakt" },
   ];

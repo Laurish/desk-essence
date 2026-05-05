@@ -5,6 +5,7 @@ import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Check, ChevronLeft, ChevronRight, Truck, RotateCcw, Shield } from "lucide-react";
 import { toast } from "sonner";
+import ReviewsSection from "@/components/ReviewsSection";
 
 const Product = () => {
   const { addItem } = useCart();
@@ -113,10 +114,10 @@ const Product = () => {
             </h1>
 
             <div className="flex items-baseline gap-3 mb-6 font-serif">
-             {footrest.originalPrice && (
-              <span className="text-base text-muted-foreground line-through">{formatPrice(footrest.originalPrice)}</span>
-             )}
-             <span className="text-3xl font-medium">{formatPrice(footrest.price)}</span>
+              {footrest.originalPrice && (
+                <span className="text-base text-muted-foreground line-through">{formatPrice(footrest.originalPrice)}</span>
+              )}
+              <span className="text-3xl font-medium">{formatPrice(footrest.price)}</span>
             </div>
 
             <p className="text-[15px] leading-[1.7] text-muted-foreground mb-8">
@@ -204,6 +205,9 @@ const Product = () => {
             ))}
           </div>
         </section>
+
+        {/* Reviews */}
+        <ReviewsSection />
 
         {/* CTA bottom */}
         <section className="text-center mt-24 py-16 border-t border-border">

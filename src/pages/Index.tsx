@@ -5,6 +5,7 @@ import { footrest, formatPrice } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import { ShoppingBag, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import ReviewsSection from "@/components/ReviewsSection";
 
 const Index = () => {
   const { addItem } = useCart();
@@ -125,6 +126,9 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      {/* REVIEWS */}
+      <ReviewsSection />
 
       {/* CTA REPEAT */}
       <section className="max-w-[1280px] mx-auto px-6 md:px-10 py-24 text-center">
