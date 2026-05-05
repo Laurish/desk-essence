@@ -43,7 +43,9 @@ const Index = () => {
             </p>
 
             <div className="flex items-baseline gap-3 mb-6 font-serif">
-              <span className="text-base text-muted-foreground line-through">899 kr</span>
+              {footrest.originalPrice && (
+                <span className="text-base text-muted-foreground line-through">{formatPrice(footrest.originalPrice)}</span>
+              )}
               <span className="text-3xl font-medium text-foreground">{formatPrice(footrest.price)}</span>
             </div>
 
