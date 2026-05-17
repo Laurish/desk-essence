@@ -42,6 +42,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Namn, e-post och ämne är obligatoriska." });
   }
 
+  if (attachment && attachment.base64 && attachment.base64.length > 5.5 * 1024 * 1024) {
+    return res.status(400).json({ error: "Filen är för stor. Max 4 MB." });
+  }
+
   const subjectLabel = subjectLabels[subject] || subject;
 
   let bodyHtml = `
