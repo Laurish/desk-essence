@@ -9,6 +9,10 @@ export default async function handler(req, res) {
 
   const { items } = req.body;
 
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: "Ogiltigt format." });
+  }
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "klarna"],
@@ -27,7 +31,7 @@ export default async function handler(req, res) {
     });
 
     res.status(200).json({ url: session.url });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch {
+    res.status(500).json({ error: "Betalningen kunde inte startas. Försök igen." });
   }
 }

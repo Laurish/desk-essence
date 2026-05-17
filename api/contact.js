@@ -2,6 +2,16 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+function esc(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 const subjectLabels = {
   question: "Fråga om produkt",
   return: "Retur / Ånger",
@@ -36,42 +46,42 @@ export default async function handler(req, res) {
 
   let bodyHtml = `
     <div style="font-family: sans-serif; max-width: 600px; color: #111;">
-      <h2 style="font-size: 20px; margin-bottom: 24px;">Nytt meddelande – ${subjectLabel}</h2>
+      <h2 style="font-size: 20px; margin-bottom: 24px;">Nytt meddelande – ${esc(subjectLabel)}</h2>
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #eee; width: 160px; color: #666; font-size: 14px;">Namn</td>
-          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${name}</td>
+          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${esc(name)}</td>
         </tr>
         <tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666; font-size: 14px;">E-post</td>
-          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;"><a href="mailto:${email}">${email}</a></td>
+          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;"><a href="mailto:${esc(email)}">${esc(email)}</a></td>
         </tr>
         <tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666; font-size: 14px;">Ämne</td>
-          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${subjectLabel}</td>
+          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${esc(subjectLabel)}</td>
         </tr>
         ${orderNumber ? `
         <tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666; font-size: 14px;">Ordernummer</td>
-          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${orderNumber}</td>
+          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${esc(orderNumber)}</td>
         </tr>` : ""}
         ${returnReason ? `
         <tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666; font-size: 14px;">Returorsak</td>
-          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${returnReasonLabels[returnReason] || returnReason}</td>
+          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${esc(returnReasonLabels[returnReason] || returnReason)}</td>
         </tr>` : ""}
         ${desiredOutcome ? `
         <tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #666; font-size: 14px;">Önskat resultat</td>
-          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${desiredOutcomeLabels[desiredOutcome] || desiredOutcome}</td>
+          <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px;">${esc(desiredOutcomeLabels[desiredOutcome] || desiredOutcome)}</td>
         </tr>` : ""}
         ${message ? `
         <tr>
           <td style="padding: 10px 0; color: #666; font-size: 14px; vertical-align: top;">Meddelande</td>
-          <td style="padding: 10px 0; font-size: 14px; white-space: pre-line;">${message}</td>
+          <td style="padding: 10px 0; font-size: 14px; white-space: pre-line;">${esc(message)}</td>
         </tr>` : ""}
       </table>
-      ${attachment ? `<p style="margin-top: 20px; font-size: 13px; color: #666;">📎 Foto bifogat: ${attachment.name}</p>` : ""}
+      ${attachment ? `<p style="margin-top: 20px; font-size: 13px; color: #666;">📎 Foto bifogat: ${esc(attachment.name)}</p>` : ""}
     </div>
   `;
 
