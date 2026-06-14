@@ -249,6 +249,7 @@ Känsliga nycklar lagras i Vercel och används aldrig direkt i koden. Hanteras u
 | `RESEND_API_KEY` | Skicka mail via Resend |
 | `SUPABASE_URL` | Server-funktion för recensioner (`submit-review`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-funktion för recensioner – **hemlig**, ger full databasåtkomst |
+| `SITE_URL` | Sajtens adress för Stripe-redirect (valfri – sätt till din domän vid lansering; annars används anropets origin) |
 
 Om något slutar fungera – kontrollera att nycklarna fortfarande är giltiga i respektive dashboard.
 
@@ -306,6 +307,11 @@ Gå till [dashboard.stripe.com](https://dashboard.stripe.com) → **Settings →
 - Organisationsnummer
 - Bankuppgifter för utbetalningar
 - Företagsadress
+
+**Passa samtidigt på (be Claude om hjälp):**
+- Uppgradera `stripe`-paketet till senaste version och lås `apiVersion` i `api/create-checkout-session.js` (Fables punkt #11 – sparad till nu så kassan kan testas direkt).
+- Sätt miljövariabeln `SITE_URL` i Vercel till din riktiga domän.
+- Gör ett **testköp** i Stripes testläge för att verifiera att kassan fungerar hela vägen.
 
 ### 5. Uppdatera mottagarmail i koden
 Byt `daniel.skshipek@hotmail.com` till rätt adress i:
