@@ -45,7 +45,7 @@ src/
   pages/
     Index.tsx            ← Startsidan
     Product.tsx          ← Produktsidan
-    Cart.tsx             ← Varukorgen (innehåller Stripe Price ID)
+    Cart.tsx             ← Varukorgen
     Contact.tsx          ← Kontaktformulär med fotouppladdning
     Reviews.tsx          ← Recensionssidan (visa + lämna recension)
   components/
@@ -55,8 +55,8 @@ src/
 
 api/
   contact.js             ← Serverless-funktion för kontaktformulär (Resend)
-  create-checkout-session.js  ← Serverless-funktion för Stripe-betalning
-  review-notify.js       ← Serverless-funktion för recensionsnotis (Resend)
+  create-checkout-session.js  ← Serverless-funktion för Stripe-betalning (pris sätts på servern)
+  submit-review.js       ← Serverless-funktion: tar emot recension, sparar i Supabase + notismail
 ```
 
 ---
@@ -102,7 +102,7 @@ price: 499,
 Koden visar rätt pris i UI:t, men det faktiska beloppet som dras från kunden sätts i **Stripe**. Varje gång du ändrar priset måste du:
 
 1. Skapa ett nytt pris i Stripe (se nedan)
-2. Byta ut Price ID:t i `src/pages/Cart.tsx`
+2. Byta ut Price ID:t i `api/create-checkout-session.js`
 
 ---
 
@@ -124,10 +124,10 @@ Koden visar rätt pris i UI:t, men det faktiska beloppet som dras från kunden s
 
 ### Uppdatera Price ID i koden
 
-Öppna `src/pages/Cart.tsx` och hitta:
+Öppna `api/create-checkout-session.js` och hitta:
 
 ```js
-priceId: "price_1TTjSI7vlCiXlogaymKvMcNV",
+const PRICE_ID = "price_1TTjSI7vlCiXlogaymKvMcNV";
 ```
 
 Byt ut mot ditt nya Price ID. Pusha sedan som vanligt.
@@ -155,7 +155,7 @@ Resend hanterar alla mail från kontaktformuläret och recensionsnotiser.
 
 ### Vart skickas mailen?
 
-Öppna `api/contact.js` och `api/review-notify.js` och hitta:
+Öppna `api/contact.js` och `api/submit-review.js` och hitta:
 
 ```js
 to: "daniel.skshipek@hotmail.com",
@@ -247,6 +247,8 @@ Känsliga nycklar lagras i Vercel och används aldrig direkt i koden. Hanteras u
 |---|---|
 | `STRIPE_SECRET_KEY` | Stripe betalningar |
 | `RESEND_API_KEY` | Skicka mail via Resend |
+| `SUPABASE_URL` | Server-funktion för recensioner (`submit-review`) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-funktion för recensioner – **hemlig**, ger full databasåtkomst |
 
 Om något slutar fungera – kontrollera att nycklarna fortfarande är giltiga i respektive dashboard.
 
@@ -297,7 +299,7 @@ När domänen och Google Workspace är klara – verifiera domänen i Resend ock
 1. Logga in på [resend.com](https://resend.com)
 2. Gå till **Domains → Add domain**
 3. Följ instruktionerna (ytterligare DNS-rader)
-4. Uppdatera avsändaradressen i `api/contact.js` och `api/review-notify.js`
+4. Uppdatera avsändaradressen i `api/contact.js` och `api/submit-review.js`
 
 ### 4. Aktivera Stripe-kontot
 Gå till [dashboard.stripe.com](https://dashboard.stripe.com) → **Settings → Business** och fyll i:
@@ -308,7 +310,7 @@ Gå till [dashboard.stripe.com](https://dashboard.stripe.com) → **Settings →
 ### 5. Uppdatera mottagarmail i koden
 Byt `daniel.skshipek@hotmail.com` till rätt adress i:
 - `api/contact.js`
-- `api/review-notify.js`
+- `api/submit-review.js`
 
 ### 6. Uppdatera trust-stripet på startsidan
 I `src/pages/Index.tsx` finns denna rad hårdkodad:
@@ -322,6 +324,9 @@ Uppdatera antalet när ni faktiskt har recensioner.
 ## Nästa steg – när ordrar börjar komma in
 
 Dessa saker är värda att bygga när ni har kunder och trafik. Be Claude om hjälp med att bygga/sätta upp varje punkt.
+
+### Konfigurera API-funktionerna var för sig (Vercel Pro)
+När Vercel uppgraderas till Pro vid lansering kan varje serverless-funktion i `api/` konfigureras separat — egen region, timeout, minne och **rate limiting per endpoint**. Då kan betalning (`create-checkout-session`), kontakt (`contact`) och recensioner (`submit-review`) finjusteras oberoende av varandra: t.ex. hårdare spärrar på kontakt/recensioner och snabbaste region för checkout.
 
 ### Recensionsmail efter en vecka
 Skicka automatiskt ett mail till kunden en vecka efter köp med en länk till `/recensioner`. Kräver:
@@ -342,4 +347,4 @@ Meta's API kräver ett godkänt utvecklarkonto. Enklaste alternativet är en tre
 
 ---
 
-*Senast uppdaterad: Maj 2026*
+*Senast uppdaterad: Juni 2026*

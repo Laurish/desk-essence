@@ -43,6 +43,7 @@ const Reviews = () => {
   const [form, setForm] = useState({ name: "", orderNumber: "", rating: 0, message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [honeypot, setHoneypot] = useState("");
 
   useEffect(() => {
     const loadReviews = async () => {
@@ -67,34 +68,32 @@ const Reviews = () => {
     !form.message;
 
   const handleSubmit = async () => {
-  setStatus("loading");
-  const { error } = await supabase.from("reviews").insert({
-    name: form.name,
-    order_number: form.orderNumber,
-    rating: form.rating,
-    message: form.message,
-    approved: false,
-  });
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/submit-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          rating: form.rating,
+          message: form.message,
+          order_number: form.orderNumber,
+          company: honeypot,
+        }),
+      });
 
-  if (error) {
-    setStatus("error");
-    return;
-  }
+      if (!res.ok) {
+        setStatus("error");
+        return;
+      }
 
-  // Skicka notismail
-  await fetch("/api/review-notify", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: form.name,
-      rating: form.rating,
-      message: form.message,
-    }),
-  });
-
-  setStatus("success");
-  setForm({ name: "", orderNumber: "", rating: 0, message: "" });
-};
+      setStatus("success");
+      setForm({ name: "", orderNumber: "", rating: 0, message: "" });
+      setHoneypot("");
+    } catch {
+      setStatus("error");
+    }
+  };
 
   const avgRating = reviews.length
     ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
@@ -168,6 +167,17 @@ const Reviews = () => {
             </div>
           ) : (
             <div className="space-y-5">
+              {/* Honeypot – dolt fält som bara bottar fyller i */}
+              <input
+                type="text"
+                name="company"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute -left-[9999px] h-0 w-0 opacity-0"
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="eyebrow mb-2 block" style={{ fontSize: "11px" }}>NAMN <span className="text-accent">*</span></label>

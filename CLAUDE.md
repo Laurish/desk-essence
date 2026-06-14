@@ -31,23 +31,25 @@ React + TypeScript + Vite SPA, deployed on Vercel.
 ### Two separate runtimes
 **Frontend** (src/) — React SPA, runs in browser, built by Vite.
 **Backend** (api/) — Vercel Serverless Functions (Node.js ESM):
-- api/create-checkout-session.js — Stripe Checkout session
+- api/create-checkout-session.js — Stripe Checkout session (price ID set server-side)
 - api/contact.js — contact form emails via Resend
-- api/review-notify.js — admin notification on new review
+- api/submit-review.js — receives review, inserts to Supabase (service role) + admin notification via Resend
 
 ### Key files
 - src/lib/products.ts — price, product info, images
 - src/lib/supabase.ts — Supabase client (hardcoded anon key, intentional — RLS is configured)
-- src/pages/Cart.tsx — contains hardcoded Stripe Price ID
-- api/contact.js — recipient email hardcoded, update before launch
+- api/create-checkout-session.js — contains hardcoded Stripe Price ID (PRICE_ID)
+- api/contact.js / api/submit-review.js — recipient email hardcoded, update before launch
 
 ### Data flow
-Checkout: Cart.tsx → POST /api/create-checkout-session → Stripe → /order-success
-Reviews: submit → approved:false → admin email → approve via Supabase SQL Editor → visible on site
+Checkout: Cart.tsx → POST /api/create-checkout-session (price set server-side) → Stripe → /order-success
+Reviews: Reviews.tsx → POST /api/submit-review → insert approved:false (service role) + admin email → approve via Supabase SQL Editor → visible on site
 
 ### Environment variables (Vercel, never in code)
 - STRIPE_SECRET_KEY
 - RESEND_API_KEY
+- SUPABASE_URL — for api/submit-review.js
+- SUPABASE_SERVICE_ROLE_KEY — for api/submit-review.js (secret, bypasses RLS)
 
 ### UI components (shadcn/ui subset)
 Only installed: accordion, button, sonner, toast, toaster, tooltip.
@@ -61,5 +63,5 @@ Do not add new shadcn components without removing unused ones.
 - [ ] Google Workspace (company email)
 - [ ] Verify domain in Resend
 - [ ] Activate Stripe account (org number + bank details)
-- [ ] Update recipient email in api/contact.js and api/review-notify.js
+- [ ] Update recipient email in api/contact.js and api/submit-review.js
 - [ ] Update review count in src/pages/Index.tsx
