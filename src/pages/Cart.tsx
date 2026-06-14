@@ -116,7 +116,6 @@ const Cart = () => {
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
                     items: items.map((item) => ({
-                      priceId: "price_1TTjSI7vlCiXlogaymKvMcNV",
                       quantity: item.quantity,
                     })),
                   }),

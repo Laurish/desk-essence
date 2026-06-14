@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,18 +32,42 @@ const desiredOutcomeLabels = {
   exchange: "Byte mot annan produkt",
 };
 
+const contactSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+  email: z.string().trim().email().max(150),
+  orderNumber: z.string().max(100).optional(),
+  subject: z.enum(["question", "return", "complaint", "other"]),
+  returnReason: z.string().max(50).optional(),
+  desiredOutcome: z.string().max(50).optional(),
+  message: z.string().max(5000).optional(),
+  attachment: z
+    .object({
+      name: z.string().min(1).max(200),
+      base64: z.string().min(1),
+      mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+    })
+    .nullable()
+    .optional(),
+});
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, orderNumber, subject, returnReason, desiredOutcome, message, attachment } = req.body;
-
-  if (!name || !email || !subject) {
-    return res.status(400).json({ error: "Namn, e-post och ämne är obligatoriska." });
+  // Honeypot: dolt fält som bara bottar fyller i.
+  if (req.body?.company) {
+    return res.status(200).json({ ok: true });
   }
 
-  if (attachment && attachment.base64 && attachment.base64.length > 5.5 * 1024 * 1024) {
+  const parsed = contactSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: "Kontrollera att alla fält är korrekt ifyllda." });
+  }
+
+  const { name, email, orderNumber, subject, returnReason, desiredOutcome, message, attachment } = parsed.data;
+
+  if (attachment && attachment.base64.length > 6 * 1024 * 1024) {
     return res.status(400).json({ error: "Filen är för stor. Max 4 MB." });
   }
 
