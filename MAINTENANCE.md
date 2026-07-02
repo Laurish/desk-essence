@@ -334,6 +334,11 @@ Dessa saker är värda att bygga när ni har kunder och trafik. Be Claude om hj�
 ### Konfigurera API-funktionerna var för sig (Vercel Pro)
 När Vercel uppgraderas till Pro vid lansering kan varje serverless-funktion i `api/` konfigureras separat — egen region, timeout, minne och **rate limiting per endpoint**. Då kan betalning (`create-checkout-session`), kontakt (`contact`) och recensioner (`submit-review`) finjusteras oberoende av varandra: t.ex. hårdare spärrar på kontakt/recensioner och snabbaste region för checkout.
 
+### Säkerhet – bra att förbättra senare
+- **Content-Security-Policy (CSP):** lägg till en CSP-header i `vercel.json` som vitlistar var skript och stilar får laddas – ett extra lager mot XSS. Kräver testning så den inte bryter Stripe/Supabase.
+- **Stripe-webhook:** bygg `/api/stripe-webhook` som tar emot Stripes betalningsbekräftelse, så du får en pålitlig orderkälla istället för att förlita dig på Stripes dashboard/mejl. Sätt även `SITE_URL` i Vercel så checkouten inte förlitar sig på `origin`-headern.
+- **Verifiera recensioners ordernummer:** koppla ordernumret i recensionsformuläret mot faktiska ordrar (kräver orderdata, t.ex. från Stripe-webhooken ovan). Idag fångas fusk enbart av din manuella godkänning.
+
 ### Recensionsmail efter en vecka
 Skicka automatiskt ett mail till kunden en vecka efter köp med en länk till `/recensioner`. Kräver:
 - **Vercel Cron Jobs** (ingår i Vercel Pro)

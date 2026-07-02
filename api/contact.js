@@ -13,6 +13,21 @@ function esc(str) {
     .replace(/'/g, "&#039;");
 }
 
+// Läser filens faktiska "magic bytes" – litar inte på klientens påstådda mimeType.
+function detectImage(base64) {
+  let buf;
+  try {
+    buf = Buffer.from(base64, "base64");
+  } catch {
+    return null;
+  }
+  if (buf.length < 12) return null;
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return { mime: "image/jpeg", ext: "jpg" };
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return { mime: "image/png", ext: "png" };
+  if (buf.toString("ascii", 0, 4) === "RIFF" && buf.toString("ascii", 8, 12) === "WEBP") return { mime: "image/webp", ext: "webp" };
+  return null;
+}
+
 const subjectLabels = {
   question: "Fråga om produkt",
   return: "Retur / Ånger",
@@ -71,6 +86,16 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Filen är för stor. Max 4 MB." });
   }
 
+  // Verifiera att bilagan verkligen är en bild (kontrollera innehållet, inte påstådd typ).
+  let safeAttachmentName = null;
+  if (attachment) {
+    const detected = detectImage(attachment.base64);
+    if (!detected) {
+      return res.status(400).json({ error: "Bilagan måste vara en giltig bildfil (JPG, PNG eller WEBP)." });
+    }
+    safeAttachmentName = `bilaga.${detected.ext}`;
+  }
+
   const subjectLabel = subjectLabels[subject] || subject;
 
   let bodyHtml = `
@@ -110,13 +135,13 @@ export default async function handler(req, res) {
           <td style="padding: 10px 0; font-size: 14px; white-space: pre-line;">${esc(message)}</td>
         </tr>` : ""}
       </table>
-      ${attachment ? `<p style="margin-top: 20px; font-size: 13px; color: #666;">📎 Foto bifogat: ${esc(attachment.name)}</p>` : ""}
+      ${attachment ? `<p style="margin-top: 20px; font-size: 13px; color: #666;">📎 Foto bifogat: ${esc(safeAttachmentName)}</p>` : ""}
     </div>
   `;
 
-  // Build attachments array for Resend
+  // Build attachments array for Resend (säkert filnamn baserat på verifierad bildtyp)
   const attachments = attachment
-    ? [{ filename: attachment.name, content: attachment.base64 }]
+    ? [{ filename: safeAttachmentName, content: attachment.base64 }]
     : [];
 
   try {
