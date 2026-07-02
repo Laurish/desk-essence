@@ -6,6 +6,7 @@ import { useCart } from "@/lib/cart";
 import { ShoppingBag, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import ReviewsSection from "@/components/ReviewsSection";
+import PageMeta from "@/components/PageMeta";
 
 const Index = () => {
   const { addItem } = useCart();
@@ -26,6 +27,7 @@ const Index = () => {
 
   return (
     <main className="pt-16">
+      <PageMeta title="Desk Essence — Ergonomiskt fotstöd med minnesskum" />
       {/* HERO */}
       <section className="max-w-[1280px] mx-auto px-6 md:px-10 py-16 md:py-24">
         <div className="grid md:grid-cols-[6fr_5fr] gap-12 md:gap-16 items-center">

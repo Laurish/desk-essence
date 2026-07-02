@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
+import PageMeta from "@/components/PageMeta";
 
 const About = () => (
   <main className="pt-24 max-w-2xl mx-auto px-6 md:px-10 pb-24 min-h-screen">
+    <PageMeta
+      title="Om oss | Desk Essence"
+      description="Desk Essence är ett litet svenskt företag med en enda produkt: ett ergonomiskt fotstöd, gjort ordentligt."
+    />
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}

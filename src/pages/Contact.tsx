@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Clock, Paperclip, X } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
 
 type Subject = "question" | "return" | "complaint" | "other" | "";
 
@@ -112,6 +113,10 @@ const Contact = () => {
 
   return (
     <main className="pt-24 max-w-[1280px] mx-auto px-6 md:px-10 pb-24 min-h-screen">
+      <PageMeta
+        title="Kontakt | Desk Essence"
+        description="Hör av dig till Desk Essence — frågor, retur eller reklamation. Vi svarar inom 24 timmar."
+      />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

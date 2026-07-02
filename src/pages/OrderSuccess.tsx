@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
 
 const OrderSuccess = () => (
   <main className="pt-24 min-h-[70vh] flex flex-col items-center justify-center text-center max-w-2xl mx-auto px-6 md:px-10 pb-24">
+    <PageMeta title="Tack för din beställning | Desk Essence" />
     <div className="w-16 h-16 rounded-full bg-accent/15 flex items-center justify-center mb-6">
       <Check className="w-7 h-7 text-accent" />
     </div>

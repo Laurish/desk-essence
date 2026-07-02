@@ -10,15 +10,15 @@ export interface Product {
   features?: string[];
 }
 
-import footrestOverview from "@/assets/footrest-overview.jpg";
-import footrestWarranty from "@/assets/footrest-warranty.jpg";
-import footrestWashable from "@/assets/footrest-washable.jpg";
-import footrestFeatures from "@/assets/footrest-features.jpg";
-import footrestBenefits from "@/assets/footrest-benefits.jpg";
-import footrestRelaxed from "@/assets/footrest-relaxed.jpg";
-import footrestAdjustable from "@/assets/footrest-adjustable.jpg";
-import footrestOccasions from "@/assets/footrest-occasions.jpg";
-import footrestFleece from "@/assets/footrest-fleece.jpg";
+import footrestOverview from "@/assets/footrest-overview.webp";
+import footrestWarranty from "@/assets/footrest-warranty.webp";
+import footrestWashable from "@/assets/footrest-washable.webp";
+import footrestFeatures from "@/assets/footrest-features.webp";
+import footrestBenefits from "@/assets/footrest-benefits.webp";
+import footrestRelaxed from "@/assets/footrest-relaxed.webp";
+import footrestAdjustable from "@/assets/footrest-adjustable.webp";
+import footrestOccasions from "@/assets/footrest-occasions.webp";
+import footrestFleece from "@/assets/footrest-fleece.webp";
 
 export const footrest: Product = {
   id: "ergonomic-footrest",

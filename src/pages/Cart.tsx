@@ -6,6 +6,7 @@ import { Minus, Plus, Trash2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import PageMeta from "@/components/PageMeta";
 
 const Cart = () => {
   const { items, updateQuantity, removeItem, totalPrice } = useCart();
@@ -14,6 +15,7 @@ const Cart = () => {
   if (items.length === 0) {
     return (
       <main className="pt-24 max-w-[1280px] mx-auto px-6 md:px-10 pb-20 min-h-[70vh] flex flex-col items-center justify-center text-center">
+        <PageMeta title="Varukorg | Desk Essence" />
         <div className="eyebrow mb-4">VARUKORG</div>
         <h1 className="font-serif text-4xl md:text-5xl mb-4">Tom varukorg.</h1>
         <p className="text-muted-foreground mb-8">Utforska vårt fotstöd och lägg det i varukorgen.</p>
@@ -28,6 +30,7 @@ const Cart = () => {
 
   return (
     <main className="pt-24 max-w-[1280px] mx-auto px-6 md:px-10 pb-20 min-h-screen">
+      <PageMeta title="Varukorg | Desk Essence" />
       <div className="eyebrow mb-3">VARUKORG</div>
       <h1 className="font-serif text-4xl md:text-5xl mb-12">Din beställning</h1>
 

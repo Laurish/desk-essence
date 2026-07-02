@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
+import PageMeta from "@/components/PageMeta";
 
 interface Review {
   id: string;
@@ -101,6 +102,10 @@ const Reviews = () => {
 
   return (
     <main className="pt-24 max-w-[1280px] mx-auto px-6 md:px-10 pb-24 min-h-screen">
+      <PageMeta
+        title="Recensioner | Desk Essence"
+        description="Läs vad kunder säger om vårt ergonomiska fotstöd — och dela din egen upplevelse."
+      />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

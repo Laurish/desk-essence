@@ -318,7 +318,15 @@ Byt `daniel.skshipek@hotmail.com` till rätt adress i:
 - `api/contact.js`
 - `api/submit-review.js`
 
-### 6. Uppdatera trust-stripet på startsidan
+### 6. Byt SEO-adresser till riktiga domänen
+När domänen är kopplad — byt `https://desk-essence.vercel.app` till `https://deskessence.se` i:
+- `index.html` (og:url, og:image, twitter:image)
+- `public/sitemap.xml` (alla adresser)
+- `public/robots.txt` (Sitemap-raden)
+
+Sätt även upp redirect i Vercel så `.vercel.app`-adressen skickar vidare till riktiga domänen (Settings → Domains — sker oftast automatiskt när domänen läggs till). Skicka sedan in sitemapen i [Google Search Console](https://search.google.com/search-console).
+
+### 7. Uppdatera trust-stripet på startsidan
 I `src/pages/Index.tsx` finns denna rad hårdkodad:
 ```tsx
 const trustItems = ["2 431 recensioner", ...];

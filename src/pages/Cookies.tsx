@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import PageMeta from "@/components/PageMeta";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-10">
@@ -9,6 +10,7 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 
 const Cookies = () => (
   <main className="pt-24 max-w-[1280px] mx-auto px-6 md:px-10 pb-24 min-h-screen">
+    <PageMeta title="Cookies | Desk Essence" />
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <div className="max-w-2xl mb-16">
         <div className="eyebrow mb-4">JURIDISKT</div>

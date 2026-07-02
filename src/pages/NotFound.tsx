@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import PageMeta from "@/components/PageMeta";
 
 const NotFound = () => (
   <main className="pt-24 min-h-[70vh] flex flex-col items-center justify-center text-center px-6">
+    <PageMeta title="Sidan finns inte | Desk Essence" />
     <div className="eyebrow mb-4">404</div>
     <h1 className="font-serif text-5xl md:text-6xl mb-4">Sidan finns inte.</h1>
     <p className="text-muted-foreground mb-10">Den här länken leder ingenstans.</p>

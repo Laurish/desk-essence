@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { footrest, formatPrice } from "@/lib/products";
 import { useCart } from "@/lib/cart";
@@ -6,10 +6,36 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, Check, ChevronLeft, ChevronRight, Truck, RotateCcw, Shield } from "lucide-react";
 import { toast } from "sonner";
 import ReviewsSection from "@/components/ReviewsSection";
+import PageMeta from "@/components/PageMeta";
 
 const Product = () => {
   const { addItem } = useCart();
   const [selectedImg, setSelectedImg] = useState(0);
+
+  // Strukturerad data (JSON-LD) – ger pris m.m. direkt i Googles sökresultat.
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: footrest.name,
+      description: footrest.description,
+      image: `${window.location.origin}${footrest.images[0]}`,
+      brand: { "@type": "Brand", name: "Desk Essence" },
+      offers: {
+        "@type": "Offer",
+        url: window.location.href,
+        priceCurrency: "SEK",
+        price: footrest.price,
+        availability: "https://schema.org/InStock",
+      },
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   const handleAdd = () => {
     addItem(footrest);
@@ -32,6 +58,10 @@ const Product = () => {
 
   return (
     <main className="pt-16 min-h-screen">
+      <PageMeta
+        title={`${footrest.name} — ${formatPrice(footrest.price)} | Desk Essence`}
+        description="Ergonomiskt fotstöd med minnesskum och justerbar höjd (10 eller 15 cm). Tvättbart sammetsöverdrag, fleece-ficka och halkfri botten. Fri frakt och 30 dagars ångerrätt."
+      />
       <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-12 md:py-16">
         {/* Breadcrumb */}
         <div className="text-[11px] tracking-[0.12em] uppercase text-muted-foreground mb-8">

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import PageMeta from "@/components/PageMeta";
 
 const faqs = [
   {
@@ -34,6 +35,10 @@ const faqs = [
 
 const Faq = () => (
   <main className="pt-24 max-w-2xl mx-auto px-6 md:px-10 pb-24 min-h-screen">
+    <PageMeta
+      title="Vanliga frågor | Desk Essence"
+      description="Svar på vanliga frågor om leverans, frakt, retur, tvättråd och vårt ergonomiska fotstöd."
+    />
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
